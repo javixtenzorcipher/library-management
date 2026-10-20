@@ -55,7 +55,10 @@ final class BooksPanel extends JPanel {
         String query = search.getText();
         List<Book> books = service.searchBooks(query);
         model.setRowCount(0);
-        countLabel.setText(books.size() + (books.size() == 1 ? " book" : " books"));
+        String countDescription = query.isBlank()
+                ? (books.size() == 1 ? " book" : " books")
+                : (books.size() == 1 ? " matching book" : " matching books");
+        countLabel.setText(books.size() + countDescription);
         for (Book book : books) {
             model.addRow(new Object[]{book.getId(), book.getTitle(), book.getAuthor(), book.getIsbn(),
                     book.getCategory(), book.getTotalCopies(), book.getAvailableCopies()});
