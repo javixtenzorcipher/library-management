@@ -43,7 +43,7 @@ src/
 │   ├── service/    # Library workflows, rules, and validation
 │   ├── storage/    # Repository abstraction and file persistence
 │   └── ui/         # Swing application and screens
-└── test/java/      # Service checks, UI checks, and screenshot generator
+└── test/java/      # Service and UI checks
 docs/               # Project report and UML class overview
 screenshots/        # Application screenshots
 ```
@@ -62,7 +62,7 @@ javac -encoding UTF-8 -d $output $sources
 java -cp $output com.folio.library.Main
 ```
 
-The application stores its data at `.library-management\library-data.ser` under the current user's home directory. The screenshot generator uses a separate temporary home and does not overwrite that data.
+The application stores its data at `.library-management\library-data.ser` under the current user's home directory.
 
 ## Verify the project
 
