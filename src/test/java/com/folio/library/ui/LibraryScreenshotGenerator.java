@@ -36,16 +36,19 @@ public final class LibraryScreenshotGenerator {
                     temporaryHome.resolve(".library-management").resolve("library-data.ser")));
             var effectiveJava = service.addBook("Effective Java", "Joshua Bloch", "9780134685991",
                     "Java", 3);
-            var headFirstJava = service.addBook("Head First Java", "Kathy Sierra", "9781491910771",
-                    "Java", 3);
+            service.addBook("Head First Java", "Kathy Sierra", "9781491910771", "Java", 3);
             var javaSwing = service.addBook("Java Swing",
                     "Marc Loy, James Elliott, David Wood, Brian Cole", "9780596004088", "GUI", 2);
             service.addBook("Object-Oriented Thought Process", "Matt Weisfeld", "9780135181966",
                     "OOP", 2);
+            var atomicHabits = service.addBook("Atomic Habits", "James Clear", "9780735211292",
+                    "Personal development", 3);
             var jordan = service.addMember("Jordan Lee", "jordan.lee@example.com", "09170000001");
             var casey = service.addMember("Casey Morgan", "casey.morgan@example.com", "09170000002");
-            var returnedLoan = service.checkoutBook(headFirstJava.getId(), jordan.getId());
+            var ethan = service.addMember("Ethan Carter", "ethan.carter@example.com", "09170000003");
+            var returnedLoan = service.checkoutBook(atomicHabits.getId(), ethan.getId());
             service.returnBook(returnedLoan.getId());
+            service.deleteMember(ethan.getId());
             service.checkoutBook(effectiveJava.getId(), jordan.getId());
             service.checkoutBook(javaSwing.getId(), casey.getId());
 

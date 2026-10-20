@@ -65,4 +65,4 @@ javac -encoding UTF-8 -d $output $sources
 java -cp $output com.folio.library.ui.LibraryScreenshotGenerator screenshots
 ```
 
-The generator uses temporary sample data and produces maximized screenshots of the dashboard, book catalog, Java search results, member directory, and loan history without changing the saved library data.
+The generator uses temporary sample data for five books (including *Atomic Habits*), two active members, and three loan-history records. It produces maximized screenshots of the dashboard, full catalog, Java-filtered search results, member directory, and loan history without changing the saved library data.
