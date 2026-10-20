@@ -64,7 +64,7 @@ java -cp $output com.folio.library.Main
 
 The application stores its data at `.library-management\library-data.ser` under the current user's home directory. The screenshot generator uses a separate temporary home and does not overwrite that data.
 
-## Run the checks
+## Verify the project
 
 From PowerShell in the project root:
 
@@ -77,12 +77,13 @@ java -ea -cp $output com.folio.library.service.LibraryServiceTest
 java -ea -cp $output com.folio.library.ui.LibraryUiDesignTest
 ```
 
-The service checks exercise validation, circulation rules, record behavior, and persistence. The UI checks verify text contrast and primary-button rendering.
+These checks provide repeatable evidence for service validation, circulation rules, record behavior, persistence, text contrast, and button rendering. Testing evidence is also included in the formal report.
 
-## Project documentation
+## Course documentation
 
-- [Print-ready project report](docs/Library%20Desk%20Project%20Documentation%20-%20Print%20Ready.docx) — project description, problem, objectives, features, OOP implementation, UML, GUI screenshots, and testing.
-- [UML class overview](docs/Library%20Desk%20UML%20Overview.png)
+The assignment's required project documentation is provided separately from this repository README. The [print-ready project report](docs/Library%20Desk%20Project%20Documentation%20-%20Print%20Ready.docx) contains the project title and description, problem statement, objectives, system features, explanation of all four OOP pillars, UML class diagram, GUI screenshots, testing evidence, and conclusion.
+
+The [UML class overview](docs/Library%20Desk%20UML%20Overview.png) is also available as a separate image.
 
 ## Screenshots
 
@@ -91,15 +92,3 @@ The service checks exercise validation, circulation rules, record behavior, and 
 - [Books matching the Java search](screenshots/03-book-search.png)
 - [Member directory](screenshots/04-members.png)
 - [Loan history](screenshots/05-loans.png)
-
-To regenerate the screenshots from a graphical desktop session, compile the project and run:
-
-```powershell
-$output = "out"
-New-Item -ItemType Directory -Path $output -Force | Out-Null
-$sources = Get-ChildItem "src" -Recurse -Filter "*.java" | ForEach-Object FullName
-javac -encoding UTF-8 -d $output $sources
-java -cp out com.folio.library.ui.LibraryScreenshotGenerator screenshots
-```
-
-The generator uses isolated demo records and replaces the screenshot files in `screenshots/`.
