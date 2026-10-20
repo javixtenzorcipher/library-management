@@ -81,9 +81,9 @@ These checks provide repeatable evidence for service validation, circulation rul
 
 ## Course documentation
 
-The assignment's required project documentation is provided separately from this repository README. The [print-ready project report](docs/Library%20Desk%20Project%20Documentation%20-%20Print%20Ready.docx) contains the project title and description, problem statement, objectives, system features, explanation of all four OOP pillars, UML class diagram, GUI screenshots, testing evidence, and conclusion.
+The assignment's required project documentation is provided separately from this repository README. The [project report](docs/Library-Desk-Project-Documentation.docx) contains the project title and description, problem statement, objectives, system features, explanation of all four OOP pillars, UML class diagram, GUI screenshots, testing evidence, and conclusion.
 
-The [UML class overview](docs/Library%20Desk%20UML%20Overview.png) is also available as a separate image.
+The UML class overview is included in the project report.
 
 ## Screenshots
 
