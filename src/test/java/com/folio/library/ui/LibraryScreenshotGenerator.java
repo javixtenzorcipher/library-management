@@ -4,15 +4,17 @@ import com.folio.library.service.LibraryService;
 import com.folio.library.storage.FileLibraryRepository;
 
 import javax.imageio.ImageIO;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import java.awt.GraphicsEnvironment;
+import java.awt.Container;
+import java.awt.Component;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
-import java.util.List;
 
 public final class LibraryScreenshotGenerator {
     private LibraryScreenshotGenerator() {
@@ -32,32 +34,39 @@ public final class LibraryScreenshotGenerator {
             System.setProperty("user.home", temporaryHome.toString());
             LibraryService service = new LibraryService(new FileLibraryRepository(
                     temporaryHome.resolve(".library-management").resolve("library-data.ser")));
-            service.seedDemoDataIfEmpty();
-            service.checkoutBook("BK-1001", "MB-1001");
-            service.checkoutBook("BK-1002", "MB-1002");
+            var effectiveJava = service.addBook("Effective Java", "Joshua Bloch", "9780134685991",
+                    "Java", 3);
+            var headFirstJava = service.addBook("Head First Java", "Kathy Sierra", "9781491910771",
+                    "Java", 3);
+            var javaSwing = service.addBook("Java Swing",
+                    "Marc Loy, James Elliott, David Wood, Brian Cole", "9780596004088", "GUI", 2);
+            service.addBook("Object-Oriented Thought Process", "Matt Weisfeld", "9780135181966",
+                    "OOP", 2);
+            var jordan = service.addMember("Jordan Lee", "jordan.lee@example.com", "09170000001");
+            var casey = service.addMember("Casey Morgan", "casey.morgan@example.com", "09170000002");
+            var returnedLoan = service.checkoutBook(headFirstJava.getId(), jordan.getId());
+            service.returnBook(returnedLoan.getId());
+            service.checkoutBook(effectiveJava.getId(), jordan.getId());
+            service.checkoutBook(javaSwing.getId(), casey.getId());
 
             SwingUtilities.invokeAndWait(() -> {
                 frame[0] = new LibraryAppFrame(service);
-                frame[0].setSize(1180, 780);
+                frame[0].setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
                 frame[0].setLocationRelativeTo(null);
                 frame[0].setVisible(true);
             });
 
             capture(frame[0], screenshotDirectory.resolve("01-dashboard.png"));
-            List<String> pages = List.of("books", "members", "loans");
-            for (int index = 0; index < pages.size(); index++) {
-                String page = pages.get(index);
-                SwingUtilities.invokeAndWait(() -> frame[0].showPage(page));
-                Thread.sleep(400);
-                capture(frame[0], screenshotDirectory.resolve(String.format("%02d-%s.png", index + 2, page)));
-            }
+            capturePage(frame[0], "books", screenshotDirectory.resolve("02-books.png"));
             SwingUtilities.invokeAndWait(() -> {
-                frame[0].showPage("dashboard");
-                frame[0].setSize(860, 700);
-                frame[0].validate();
+                if (!setSearchQuery(frame[0].getContentPane(),
+                        "Search title, author, ISBN, or category", "Java")) {
+                    throw new IllegalStateException("Could not find the book catalog search field.");
+                }
             });
-            Thread.sleep(300);
-            capture(frame[0], screenshotDirectory.resolve("05-dashboard-compact.png"));
+            capture(frame[0], screenshotDirectory.resolve("03-book-search.png"));
+            capturePage(frame[0], "members", screenshotDirectory.resolve("04-members.png"));
+            capturePage(frame[0], "loans", screenshotDirectory.resolve("05-loans.png"));
         } finally {
             if (frame[0] != null) {
                 SwingUtilities.invokeAndWait(frame[0]::dispose);
@@ -72,6 +81,27 @@ public final class LibraryScreenshotGenerator {
             }
             Files.deleteIfExists(temporaryHome);
         }
+    }
+
+    private static void capturePage(LibraryAppFrame frame, String page, Path destination) throws Exception {
+        SwingUtilities.invokeAndWait(() -> frame.showPage(page));
+        Thread.sleep(300);
+        capture(frame, destination);
+    }
+
+    private static boolean setSearchQuery(Container container, String accessibleName, String query) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JTextField textField
+                    && accessibleName.equals(textField.getAccessibleContext().getAccessibleName())) {
+                textField.setText(query);
+                return true;
+            }
+            if (component instanceof Container child
+                    && setSearchQuery(child, accessibleName, query)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void capture(LibraryAppFrame frame, Path destination) throws Exception {

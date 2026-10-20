@@ -100,8 +100,8 @@ final class DashboardPanel extends JPanel {
         JLabel heading = new JLabel("A little more room for great stories.");
         heading.setFont(Theme.font(18, Font.BOLD));
         heading.setForeground(Theme.INK);
-        JLabel detail = new JLabel("Your library, at a glance.");
-        detail.setFont(Theme.font(13, Font.PLAIN));
+        JLabel detail = new JLabel("Your Library, at a glance.");
+        detail.setFont(Theme.font(15, Font.PLAIN));
         detail.setForeground(Theme.MUTED);
         text.add(heading);
         text.add(Box.createVerticalStrut(5));
